@@ -25,11 +25,11 @@ nan = np.nan
 X = [[1, 2, nan], [3, 4, 3], [nan, 6, 5], [8, 8, 7]]
 
 
-url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
-# load dataset into Pandas DataFrame
-df = pd.read_csv(url, names=['sepal length', 'sepal width', 'petal length', 'petal width', 'target'])
-df.pop('target')
-input_data = X
-imputed_data = imputation(input_data)
-scaled_data = robust_scaler(imputed_data)
-print(scaled_data)
+# url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+# # load dataset into Pandas DataFrame
+# df = pd.read_csv(url, names=['sepal length', 'sepal width', 'petal length', 'petal width', 'target'])
+# df.pop('target')
+# input_data = X
+# imputed_data = imputation(input_data)
+# scaled_data = robust_scaler(imputed_data)
+# print(scaled_data)
