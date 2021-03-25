@@ -22,14 +22,15 @@ def imputation(data_frame):
 
 
 nan = np.nan
-X = [[1, 2, nan], [3, 4, 3], [nan, 6, 5], [8, 8, 7]]
+X = [[1, '21', nan], [0, 40, 3], [nan, 6, 5], [8, 8, 7]]
+print(type(X))
 
 
 # url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
 # # load dataset into Pandas DataFrame
 # df = pd.read_csv(url, names=['sepal length', 'sepal width', 'petal length', 'petal width', 'target'])
 # df.pop('target')
-# input_data = X
-# imputed_data = imputation(input_data)
-# scaled_data = robust_scaler(imputed_data)
-# print(scaled_data)
+input_data = X
+imputed_data = imputation(input_data)
+scaled_data = robust_scaler(imputed_data)
+print(scaled_data)
