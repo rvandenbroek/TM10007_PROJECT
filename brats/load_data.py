@@ -13,3 +13,5 @@ def load_data():
     data = data.drop(columns=['Date'])
 
     return data
+
+print('test')
