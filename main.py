@@ -13,7 +13,9 @@ from preprocessing import dropnan
 from k_fold_cross_val import k_fold_cross_validation
 
 from KNN import knn_classifier
-from KNN import SVM
+from SVM import SVM_algorithm
+from SVM import SVM_hyper
+from SVM import SVM_PCA
 
 print('start')
 data = load_data()
@@ -25,7 +27,12 @@ imputed_train, imputed_test = imputation(data_train, data_test)
 scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
 print('done')
 
-X = knn_classifier(scaled_train, labels_train, scaled_test, labels_test)
-print(X)
-Y = SVM(scaled_train, labels_train, scaled_test, labels_test)
-print(Y)
+#X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
+#X = knn_classifier(scaled_train, labels_train, scaled_test, labels_test)
+#print(X)
+
+#X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
+#Y = SVM_hyper(X_train_pca, labels_train, X_test_pca, labels_test)
+#print(Y)
+
+Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
