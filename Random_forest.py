@@ -1,24 +1,22 @@
-
-#allemaal gekopieerd en aangepast van de Colab maar werkt nog niet!
-
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
 from main import scaled_data
 from main import labels_train
-import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestClassifier
-#n_trees = [1, 5, 10, 50, 100]
-n_trees = [5]
-num =1
-    
-# Now use the classifiers on all datasets
-fig = plt.figure(figsize=(24,8*1))
+from main import data_test
+from preprocessing import imputation
+from preprocessing import robust_scaler
 
-clf = RandomForestClassifier(n_estimators=5)
-clf.fit(scaled_data, labels_train)
-ax = fig.add_subplot(7, 3, num + 1)
-ax.scatter(scaled_data[:, 0], scaled_data[:, 1], marker='o', c=labels_train,
-    s=25, edgecolor='k', cmap=plt.cm.Paired)
-colorplot(clf, ax, scaled_data[:, 0], scaled_data[:, 1])
-y_pred = clf.predict(scaled_data)
-t = ("Misclassified: %d / %d" % ((labels_train != y_pred).sum(), scaled_data.shape[0]))
-ax.set_title(t)
-num += 1
+n_trees = [1, 5, 10, 50, 100, 500]
+for n_tree in n_trees:
+    clf = RandomForestClassifier(n_estimators=n_tree)
+
+    clf.fit(scaled_data, labels_train)
+    #clf.fit(scaled_data, labels_train)
+    imp= imputation(data_test)
+    rob=robust_scaler(imp)
+    pred=clf.predict(rob)
+    print(f'number of trees = {n_tree}, pred= {pred}')
+    #print((pred==data_test))
+#print(type(pred))
+
+#print(clf.predict([scaled_data]))
