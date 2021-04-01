@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 
 
-def cross_validation(X2,y2):
+def rfe(X2,y2):
     # Create the RFE object and compute a cross-validated score.
     svc = svm.SVC(kernel="linear")
 
