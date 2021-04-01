@@ -1,6 +1,6 @@
 
 
-def k_fold_cross_validation(traindata, traindata_labels, n_splits_hyper_para =3):
+def k_fold_cross_validation(traindata, traindata_labels, n_splits_hyper_para =10):
     """This k_fold cross validation allows you to split your training data
     in a validation set and a train set. Required imputs: train_data, train_data labels,
     and optionally you can select the number of splits for the cross validation. 
@@ -15,5 +15,5 @@ def k_fold_cross_validation(traindata, traindata_labels, n_splits_hyper_para =3)
         #print("TRAIN:", train_index, "TEST:", test_index)
 
         X_train, X_val = X[train_index], X[test_index]
-        y_train, y_val = y[train_index], y[test_index]
-    return X_train, X_val, y_train, y_val
+        y_train, y_val = y[train_index], y[test_index] 
+        return X_train, X_val, y_train, y_val
