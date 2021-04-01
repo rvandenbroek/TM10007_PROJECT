@@ -17,6 +17,6 @@ def split_train_test(data):
     # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html
     # Later percentages veranderen en kijken naar de uitkomst: dit ook onderbouwen
     # Shuffle default = True 
-    data_train, data_test, labels_train, labels_test = model_selection.train_test_split(data, labels, stratify=labels, random_state=3, train_size=0.85)
+    data_train, data_test, labels_train, labels_test = model_selection.train_test_split(data, labels, stratify=labels, random_state=42, train_size=0.8)
 
     return data_train, data_test, labels_train, labels_test
