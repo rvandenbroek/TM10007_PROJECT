@@ -1,4 +1,3 @@
-from sklearn.svm import SVC
 from sklearn import neighbors
 from sklearn import model_selection
 import numpy as np 
@@ -60,29 +59,11 @@ def knn_classifier(X_train_pca, y_train, X_test_pca, y_test):
     ax.plot(k_list, test_scores_mean, 'o-', color="g",
             label="Test score")
 
-
+    X = max(test_scores_mean)
 
     knn = neighbors.KNeighborsClassifier(n_neighbors=15)
     knn.fit(X_train_pca, y_train)
     score_train = knn.score(X_train_pca, y_train)
     score_test = knn.score(X_test_pca, y_test)
-    plt.show()
-    return fig
-
-
-def SVM(X_train, Y_train, X_test, Y_test):
-    clf = SVC(kernel='poly', degree=3, gamma='scale')
-    clf.fit(X_train, Y_train)
-    score_test = clf.score(X_test, Y_test)
-
-    return score_test
-    # wat ze ook doen is 
-    # clf.fit(X_all, Y_all) 
-    # clf.predict(X_all) predicten met alleen X 
-    # Dan die uitkomst vergelijken met Y? 
-
-
-
-#hyperparameters: degree of kernel, homogeneity coef0. Slack of parameter
-
-
+    #plt.show()
+    return X
