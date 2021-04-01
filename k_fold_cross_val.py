@@ -16,4 +16,4 @@ def k_fold_cross_validation(traindata, traindata_labels, n_splits_hyper_para =10
 
         X_train, X_val = X[train_index], X[test_index]
         y_train, y_val = y[train_index], y[test_index] 
-        return X_train, X_val, y_train, y_val
+        return X_train, X_val, y_train, y_val # even kijken waar deze return moet komen
