@@ -10,6 +10,8 @@ from split import split_train_test
 from PCA import PCA_algorithm
 from cross_validation import rfe
 from preprocessing import dropnan
+from k_fold_cross_val import k_fold_cross_validation
+
 
 print('start')
 data = load_data()
