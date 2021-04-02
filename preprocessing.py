@@ -17,10 +17,9 @@ def dropnan(data, threshold):
 
 
 def imputation(train_data, test_data):
-    '''With this function, features with more than threshold amount of numbers will be dropped. 
-    If this amount is below the threshold, the missing features are imputed with KNN'''
+    '''With this function, the missing feature values are imputed with KNN'''
     # impute the still existing NaN's 
-    imputer = KNNImputer(n_neighbors=2, weights="uniform")
+    imputer = KNNImputer(n_neighbors=3, weights="uniform")
     imputed_train = imputer.fit_transform(train_data)
     imputed_test = imputer.transform(test_data)
 
