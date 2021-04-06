@@ -19,7 +19,8 @@ from SVM import SVM_PCA
 from sklearn import model_selection
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
-from Random_forest import RF_hyperpara
+from Random_forest import RF_hyperpara, random_forest_algoritm
+
 print('start')
 data = load_data()
 threshold = math.floor(len(data)*0.5)
@@ -28,7 +29,8 @@ data_train, data_test, labels_train, labels_test = split_train_test(data)
 
 imputed_train, imputed_test = imputation(data_train, data_test)
 scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
-print('done')
+pca_train, pca_test = PCA_algorithm(scaled_train, scaled_test)
+#print('done')
 
 #X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
 #X = knn_classifier(scaled_train, labels_train, scaled_test, labels_test)
@@ -40,6 +42,10 @@ print('done')
 
 #Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
 
-train_scores_mean, train_scores_std, test_scores_mean, test_scores_std, plt = RF_hyperpara(scaled_train, labels_train, scaled_test, labels_test)
+train_scores_mean, train_scores_std, val_scores_mean, val_scores_std, plt = RF_hyperpara(scaled_train, labels_train, show_fig=False)
+print(f'val_scores_mean={val_scores_mean}')
+test_score = random_forest_algoritm(scaled_train, labels_train, scaled_test, labels_test)
+print(f'test_score={test_score}')
 
-print(f'train_scores_mean={train_scores_mean}')
+#pca_train_scores_mean, pca_train_scores_std, pca_val_scores_mean, pca_val_scores_std, plt = RF_hyperpara(pca_train, labels_train, show_fig=True)
+#print(f'pca_val_scores_mean={pca_val_scores_mean}')
