@@ -28,7 +28,6 @@ data_train, data_test, labels_train, labels_test = split_train_test(data)
 
 imputed_train, imputed_test = imputation(data_train, data_test)
 scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
-pca_train, pca_test = PCA_algorithm(scaled_train, scaled_test)
 print('done')
 
 #X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
@@ -42,4 +41,5 @@ print('done')
 #Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
 
 train_scores_mean, train_scores_std, test_scores_mean, test_scores_std, plt = RF_hyperpara(scaled_train, labels_train, scaled_test, labels_test)
+
 print(f'train_scores_mean={train_scores_mean}')
