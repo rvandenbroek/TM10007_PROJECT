@@ -19,7 +19,7 @@ from SVM import SVM_PCA
 from sklearn import model_selection
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
-
+from Random_forest import RF_hyperpara
 print('start')
 data = load_data()
 threshold = math.floor(len(data)*0.5)
@@ -39,3 +39,6 @@ print('done')
 #print(Y)
 
 #Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
+
+train_scores_mean, train_scores_std, test_scores_mean, test_scores_std, plt = RF_hyperpara(scaled_train, labels_train, scaled_test, labels_test)
+print(f'train_scores_mean={train_scores_mean}')
