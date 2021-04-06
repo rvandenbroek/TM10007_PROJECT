@@ -13,8 +13,10 @@ from preprocessing import dropnan
 from sklearn import decomposition 
 
 def PCA_algorithm(X_train_scaled, X_test_scaled):
-    pca = decomposition.PCA(n_components=10)
+    pca = decomposition.PCA(n_components=3)
     pca.fit(X_train_scaled)
+    variance = pca.explained_variance_ratio_
+    cumvariance = variance.cumsum())
     X_train_pca = pca.transform(X_train_scaled)
     X_test_pca = pca.transform(X_test_scaled)
     return X_train_pca, X_test_pca
@@ -28,7 +30,7 @@ def PCA_algorithm(X_train_scaled, X_test_scaled):
 # data_train, data_test, labels_train, labels_test = split_train_test(data)
 # imputed_train, imputed_test = imputation(data_train, data_test)
 # scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
-# print(f'scaled: {(scaled_train.shape)}')
+# # print(f'scaled: {(scaled_train.shape)}')
 # X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
 # print(f'X_train: {(X_train_pca.shape)}')
 
