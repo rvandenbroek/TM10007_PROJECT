@@ -23,7 +23,7 @@ from Random_forest import RF_hyperpara, random_forest_algoritm
 
 print('start')
 data = load_data()
-threshold = math.floor(len(data)*0.5)
+threshold = math.floor(len(data)*0.8)
 data = dropnan(data, threshold)
 data_train, data_test, labels_train, labels_test = split_train_test(data)
 
