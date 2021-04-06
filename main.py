@@ -16,6 +16,9 @@ from KNN import knn_classifier
 from SVM import SVM_algorithm
 from SVM import SVM_hyper
 from SVM import SVM_PCA
+from sklearn import model_selection
+from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 
 print('start')
 data = load_data()
@@ -35,4 +38,4 @@ print('done')
 #Y = SVM_hyper(X_train_pca, labels_train, X_test_pca, labels_test)
 #print(Y)
 
-Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
+#Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
