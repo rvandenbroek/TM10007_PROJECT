@@ -28,6 +28,7 @@ data_train, data_test, labels_train, labels_test = split_train_test(data)
 
 imputed_train, imputed_test = imputation(data_train, data_test)
 scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
+pca_train, pca_test = PCA_algorithm(scaled_train, scaled_test)
 print('done')
 
 #X_train_pca, X_test_pca = PCA_algorithm(scaled_train, scaled_test)
