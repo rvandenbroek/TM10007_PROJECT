@@ -42,10 +42,11 @@ pca_train, pca_test = PCA_algorithm(scaled_train, scaled_test)
 
 #Y = SVM_PCA(scaled_train, labels_train, scaled_test, labels_test)
 
-train_scores_mean, train_scores_std, val_scores_mean, val_scores_std, plt = RF_hyperpara(scaled_train, labels_train, show_fig=False)
-print(f'val_scores_mean={val_scores_mean}')
-test_score = random_forest_algoritm(scaled_train, labels_train, scaled_test, labels_test)
-print(f'test_score={test_score}')
+##
+#train_scores_mean, train_scores_std, val_scores_mean, val_scores_std, plt = RF_hyperpara(scaled_train, labels_train, show_fig=True)
+#print(f'val_scores_mean={val_scores_mean}')
+#test_score = random_forest_algoritm(scaled_train, labels_train, scaled_test, labels_test)
+#print(f'test_score={test_score}')
 
-#pca_train_scores_mean, pca_train_scores_std, pca_val_scores_mean, pca_val_scores_std, plt = RF_hyperpara(pca_train, labels_train, show_fig=True)
-#print(f'pca_val_scores_mean={pca_val_scores_mean}')
+pca_train_scores_mean, pca_train_scores_std, pca_val_scores_mean, pca_val_scores_std, plt = RF_hyperpara(pca_train, labels_train, show_fig=False)
+print(f'pca_val_scores_mean={pca_val_scores_mean}')

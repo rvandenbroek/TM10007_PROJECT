@@ -77,7 +77,7 @@ def RF_hyperpara(scaled_train, labels_train, max_trees=100, show_fig=False):
     return (train_scores_mean, train_scores_std, val_scores_mean, val_scores_std, plt)
 
 
-def random_forest_algoritm(train_data, train_labels, test_data, test_labels, n_estimators=30):
+def random_forest_algoritm(train_data, train_labels, test_data, test_labels, n_estimators=40):
     
     clf = RandomForestClassifier(n_estimators)
     clf.fit(train_data, train_labels)
