@@ -13,6 +13,7 @@ def dropnan(data, threshold):
     data = data.replace([np.inf, -np.inf], np.nan, regex=True)
     # drop the features with more than threshold NaN's
     data = data.dropna(thresh=threshold, axis=1)
+    print(data.shape)
     return data
 
 
