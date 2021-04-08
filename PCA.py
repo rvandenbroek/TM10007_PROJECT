@@ -14,7 +14,7 @@ from sklearn import decomposition
 
 
 def PCA_algorithm(X_train_scaled, X_test_scaled):
-    pca = decomposition.PCA(n_components=3)
+    pca = decomposition.PCA(n_components=8)
     pca.fit(X_train_scaled)
     variance = pca.explained_variance_ratio_
     cumvariance = variance.cumsum()
