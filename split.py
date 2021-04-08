@@ -5,8 +5,8 @@ from sklearn import model_selection
 import numpy as np
 
 data = load_data()
-print(f'The number of samples: {len(data.index)}')
-print(f'The number of columns: {len(data.columns)}')
+#print(f'The number of samples: {len(data.index)}')
+#print(f'The number of columns: {len(data.columns)}')
 
 def split_train_test(data):
     '''This function will split the data in train and test'''
