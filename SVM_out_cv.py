@@ -35,8 +35,8 @@ data.pop('label')
 # Create a 20 fold stratified CV iterator
 cv_20fold = model_selection.StratifiedKFold(n_splits=10)
 results = []
-best_kernel = []
-best_degree = []
+best_C = []
+best_coef0= []
 
 # Loop over the folds
 for validation_index, test_index in cv_20fold.split(data, labels):
@@ -54,19 +54,19 @@ for validation_index, test_index in cv_20fold.split(data, labels):
 
     # Create a grid search to find the optimal k using a gridsearch and 10-fold cross validation
     # Same as above
-    #, "gamma": ['scale'], "coef0": 20, "C":1
-    parameters = {"kernel": ['poly', 'linear'], "degree": list(range(1,4,1))}
-    svm = SVC()
+    #, "gamma": ['scale'], "coef0": 20, "C":1 "kernel": ['poly', 'linear'], 
+    parameters = {"C": [0.4, 0.6, 0.8, 1, 1.2, 1.4], "coef0": list(range(1, 25, 5))}
+    svm = SVC(probability=True, gamma='scale', kernel='poly')
     cv_10fold = model_selection.StratifiedKFold(n_splits=10)
     grid_search = model_selection.GridSearchCV(svm, parameters, cv=cv_10fold, scoring='roc_auc')
     grid_search.fit(pca_train, y_validation)
     
     # Get resulting classifier
     clf = grid_search.best_estimator_
-    print(f'Best kernel: k={clf.kernel}')
-    print(f'Best degree: k={clf.degree}')
-    best_kernel.append(clf.kernel)
-    best_degree.append(clf.degree)
+    print(f'Best C: k={clf.C}')
+    print(f'Best coef0: k={clf.coef0}')
+    best_C.append(clf.C)
+    best_coef0.append(clf.coef0)
     
     # Test the classifier on the test data
     probabilities = clf.predict_proba(pca_test)
@@ -76,8 +76,8 @@ for validation_index, test_index in cv_20fold.split(data, labels):
     auc = metrics.roc_auc_score(y_test, scores)
     results.append({
         'auc': auc,
-        'degree': clf.degree,
-        'kernel': clf.kernel,
+        'C': clf.C,
+        'coef0': clf.coef0,
         'set': 'test'
     })
     
@@ -89,8 +89,8 @@ for validation_index, test_index in cv_20fold.split(data, labels):
     auc_validation = metrics.roc_auc_score(y_validation, scores_validation)
     results.append({
         'auc': auc_validation,
-        'degree': clf.degree,
-        'kernel': clf.kernel,
+        'C': clf.C,
+        'coef0': clf.coef0,
         'set': 'validation'
     })
     
@@ -98,6 +98,4 @@ for validation_index, test_index in cv_20fold.split(data, labels):
 results = pd.DataFrame(results)
 seaborn.boxplot(y='auc', x='set', data=results)
 plt.show()
-optimal_degree = int(np.median(best_degree))
-#optimal_kernel = int(np.median(best_kernel))
-print(f"The optimal degree={optimal_degree}")
+
