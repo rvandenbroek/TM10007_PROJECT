@@ -26,6 +26,15 @@ def imputation(train_data, test_data):
 
     return imputed_train, imputed_test
 
+def standard_scaler(train_data, test_data):
+    """This function scales the features in a robust way """
+    scaler = preprocessing.StandardScaler()
+    scaler.fit(train_data)
+    scaled_train = scaler.transform(train_data)
+    scaled_test = scaler.transform(test_data)
+
+    return (scaled_train, scaled_test)
+
 
 def robust_scaler(train_data, test_data):
     """This function scales the features in a robust way """
