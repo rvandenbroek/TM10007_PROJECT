@@ -31,13 +31,13 @@ data = dropnan(data, threshold)
 labels = np.array(data['label'])
 data.pop('label')
 
-# Create a 20 fold stratified CV iterator
-cv_20fold = model_selection.StratifiedKFold(n_splits=10)
+# Create a 5 fold stratified CV iterator
+cv_5fold = model_selection.StratifiedKFold(n_splits=5)
 results = []
 best_n_neighbors = []
 
 # Loop over the folds
-for validation_index, test_index in cv_20fold.split(data, labels):
+for validation_index, test_index in cv_5fold.split(data, labels):
     # Split the data properly
     X_validation = data.iloc[validation_index]
     y_validation = labels[validation_index]
@@ -91,5 +91,3 @@ for validation_index, test_index in cv_20fold.split(data, labels):
 results = pd.DataFrame(results)
 seaborn.boxplot(y='auc', x='set', data=results)
 plt.show()
-optimal_n = int(np.median(best_n_neighbors))
-print(f"The optimal N={optimal_n}")

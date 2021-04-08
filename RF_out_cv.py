@@ -32,12 +32,12 @@ labels = np.array(data['label'])
 data.pop('label')
 
 # Create a 20 fold stratified CV iterator
-cv_20fold = model_selection.StratifiedKFold(n_splits=10)
+cv_5fold = model_selection.StratifiedKFold(n_splits=5)
 results = []
 best_n_trees = []
 
 # Loop over the folds
-for validation_index, test_index in cv_20fold.split(data, labels):
+for validation_index, test_index in cv_5fold.split(data, labels):
     # Split the data properly
     X_validation = data.iloc[validation_index]
     y_validation = labels[validation_index]
@@ -52,7 +52,7 @@ for validation_index, test_index in cv_20fold.split(data, labels):
 
     # Create a grid search to find the optimal k using a gridsearch and 10-fold cross validation
     # Same as above
-    parameters = {"n_estimators": list(range(20, 40, 2))}
+    parameters = {"n_estimators": list(range(1, 51, 5))}
     RF = RandomForestClassifier()
     cv_10fold = model_selection.StratifiedKFold(n_splits=10)
     grid_search = model_selection.GridSearchCV(RF, parameters, cv=cv_10fold, scoring='roc_auc')
@@ -91,5 +91,3 @@ for validation_index, test_index in cv_20fold.split(data, labels):
 results = pd.DataFrame(results)
 seaborn.boxplot(y='auc', x='set', data=results)
 plt.show()
-optimal_n = int(np.median(best_n_trees))
-print(f"The optimal N={optimal_n}")
