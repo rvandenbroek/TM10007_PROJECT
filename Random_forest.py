@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn import datasets as ds
 import seaborn
+from score import scoring
 #from main import scaled_train, labels_train, scaled_test, labels_test
 # Classifiers
 from sklearn import model_selection
@@ -81,5 +82,7 @@ def random_forest_algoritm(train_data, train_labels, test_data, test_labels, n_e
     
     clf = RandomForestClassifier(n_estimators)
     clf.fit(train_data, train_labels)
-    test_score=clf.score(test_data,test_labels)
-    return test_score
+    y_pred = clf.predict(test_data)
+    f1, prec, acc, recall = scoring(test_labels, y_pred)
+    #test_score=clf.score(test_data,test_labels)
+    return f1, prec, acc, recall
