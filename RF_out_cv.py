@@ -23,6 +23,8 @@ from Random_forest import RF_hyperpara, random_forest_algoritm
 from sklearn import neighbors
 import seaborn
 import matplotlib.pyplot as plt
+from statistics import mean
+from statistics import stdev
 
 print('start')
 data = load_data()
@@ -32,12 +34,14 @@ labels = np.array(data['label'])
 data.pop('label')
 
 # Create a 20 fold stratified CV iterator
-cv_5fold = model_selection.StratifiedKFold(n_splits=5)
+cv_10fold = model_selection.StratifiedKFold(n_splits=10)
 results = []
 best_n_trees = []
+accuracies = []
+conf_matrix_list = []
 
 # Loop over the folds
-for validation_index, test_index in cv_5fold.split(data, labels):
+for validation_index, test_index in cv_10fold.split(data, labels):
     # Split the data properly
     X_validation = data.iloc[validation_index]
     y_validation = labels[validation_index]
@@ -64,6 +68,7 @@ for validation_index, test_index in cv_5fold.split(data, labels):
     best_n_trees.append(clf.n_estimators)
     
     # Test the classifier on the test data
+    predicted = clf.predict(pca_test)
     probabilities = clf.predict_proba(pca_test)
     scores = probabilities[:, 1]
     
@@ -74,6 +79,14 @@ for validation_index, test_index in cv_5fold.split(data, labels):
         'n': clf.n_estimators,
         'set': 'test'
     })
+
+    # Accuracies
+    accuracy = metrics.accuracy_score(y_test, predicted)
+    accuracies.append(accuracy)
+
+    #Confusion matrix
+    conf_matrix = metrics.confusion_matrix(y_test, predicted)
+    conf_matrix_list.append(conf_matrix)
     
     # Test the classifier on the validation data
     probabilities_validation = clf.predict_proba(pca_train)
@@ -89,5 +102,20 @@ for validation_index, test_index in cv_5fold.split(data, labels):
     
 # Create results dataframe and plot it
 results = pd.DataFrame(results)
-seaborn.boxplot(y='auc', x='set', data=results)
+#seaborn.boxplot(y='auc', x='set', data=results)
+#plt.show()
+
+# Accuracy
+mean_accuracy = mean(accuracies)
+std_accuracy = stdev(accuracies)
+print(mean_accuracy)
+print(std_accuracy)
+
+# Confusion matrix
+mean_of_conf_matrix = np.mean(conf_matrix_list, axis=0)
+conf_matrix_df = pd.DataFrame.from_dict({
+        'Actual: GBM': mean_of_conf_matrix[0],
+        'Actual: LGG': mean_of_conf_matrix[1]},
+orient='index', columns=['Predicted: GBM', 'Predicted: LGG'])
+seaborn.heatmap(conf_matrix_df/np.sum(np.sum(conf_matrix_df)), annot= True, fmt='.2%', cmap='Blues')
 plt.show()
