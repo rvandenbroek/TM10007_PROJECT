@@ -42,8 +42,13 @@ best_coef0 = []
 accuracies = []
 conf_matrix_list = []
 
+tprs = []
+aucs = []
+mean_fpr = np.linspace(0, 1, 100)
+fig, ax = plt.subplots()
+
 # Loop over the folds
-for validation_index, test_index in cv_10fold.split(data, labels):
+for i, (validation_index, test_index) in enumerate(cv_10fold.split(data, labels)):
     # Split the data properly
     X_validation = data.iloc[validation_index]
     y_validation = labels[validation_index]
@@ -76,6 +81,15 @@ for validation_index, test_index in cv_10fold.split(data, labels):
     predicted = clf.predict(pca_test)
     probabilities = clf.predict_proba(pca_test)
     scores = probabilities[:, 1]
+
+    #ROC curve
+    viz =  metrics.plot_roc_curve(clf, pca_test, y_test,
+                         name='ROC fold {}'.format(i),
+                         alpha=0.3, lw=1, ax=ax)
+    interp_tpr = np.interp(mean_fpr, viz.fpr, viz.tpr)
+    interp_tpr[0] = 0.0
+    tprs.append(interp_tpr)
+    aucs.append(viz.roc_auc)
 
     # Get the auc
     auc = metrics.roc_auc_score(y_test, scores)
@@ -124,5 +138,25 @@ conf_matrix_df = pd.DataFrame.from_dict({
         'Actual: GBM': mean_of_conf_matrix[0],
         'Actual: LGG': mean_of_conf_matrix[1]},
 orient='index', columns=['Predicted: GBM', 'Predicted: LGG'])
-seaborn.heatmap(conf_matrix_df/np.sum(np.sum(conf_matrix_df)), annot= True, fmt='.2%', cmap='Blues')
+#seaborn.heatmap(conf_matrix_df/np.sum(np.sum(conf_matrix_df)), annot= True, fmt='.2%', cmap='Blues')
+#plt.show()
+
+# Plot ROC curves
+mean_tpr = np.mean(tprs, axis=0)
+mean_tpr[-1] = 1.0
+mean_auc = metrics.auc(mean_fpr, mean_tpr)
+std_auc = np.std(aucs)
+ax.plot(mean_fpr, mean_tpr, color='b',
+        label=r'Mean ROC (AUC = %0.2f $\pm$ %0.2f)' % (mean_auc, std_auc),
+        lw=2, alpha=.8)
+
+std_tpr = np.std(tprs, axis=0)
+tprs_upper = np.minimum(mean_tpr + std_tpr, 1)
+tprs_lower = np.maximum(mean_tpr - std_tpr, 0)
+ax.fill_between(mean_fpr, tprs_lower, tprs_upper, color='grey', alpha=.2,
+                label=r'$\pm$ 1 std. dev.')
+
+ax.set(xlim=[-0.05, 1.05], ylim=[-0.05, 1.05],
+       title="Receiver operating curve SVM")
+ax.legend(loc="lower right")
 plt.show()
