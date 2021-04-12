@@ -1,4 +1,4 @@
-from sklearn.metrics import f1_score, average_precision_score, accuracy_score, recall_score
+from sklearn.metrics import f1_score, average_precision_score, accuracy_score, recall_score, confusion_matrix
 
 def scoring(y_true_label, y_prediction):
 
@@ -10,4 +10,6 @@ def scoring(y_true_label, y_prediction):
     prec = average_precision_score(y_true_label, y_prediction)
     acc = accuracy_score(y_true_label, y_prediction)
     recall = recall_score(y_true_label, y_prediction)
+    CM = confusion_matrix(y_true_label, y_prediction)
+    print(CM)
     return(f1, prec, acc, recall)
