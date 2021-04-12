@@ -21,6 +21,7 @@ from statistics import mean
 from statistics import stdev
 from score import scoring
 
+
 # Definitions preprocessing
 def dropnan(data, threshold):
     '''First of all, cetrain strings and values in the dataset are turned into NaN.
@@ -42,7 +43,7 @@ def imputation(train_data, test_data):
     the test set. The inputs are the trainset and the testset, the outputs are the same sets with imputed 
     values.
     '''
-    # impute the still existing NaN's 
+    # impute the still existing NaN's
     imputer = KNNImputer(n_neighbors=3, weights="uniform")
     imputed_train = imputer.fit_transform(train_data)
     imputed_test = imputer.transform(test_data)
@@ -63,7 +64,7 @@ def robust_scaler(train_data, test_data):
     return (scaled_train, scaled_test)
 
 
-def build_model_and_results(cv_10fold, classifier, parameters, show_fig=False):
+def build_model_and_results(data, labels, classifier, parameters):
     '''This function splits the data and finds the best hyperparameter per split.
     This hyperparameter is applied in a classification on the test set in 10 folds. The accuracy,
     F1 score, precision, recall, confusion matrices, true positives and aucs are returned'''
@@ -75,6 +76,7 @@ def build_model_and_results(cv_10fold, classifier, parameters, show_fig=False):
     tprs = []
     aucs = []
     mean_fpr = np.linspace(0, 1, 100)
+    cv_10fold = model_selection.StratifiedKFold(n_splits=10)
     fig, ax = plt.subplots()
 
     # Loop over the folds
@@ -157,14 +159,11 @@ def build_model_and_results(cv_10fold, classifier, parameters, show_fig=False):
     plt.show()
     return
 
-              
 data = load_data()
 threshold = math.floor(len(data)*0.8)
 data = dropnan(data, threshold)
 labels = np.array(data['label'])
 data.pop('label')
-
-cv_10fold = model_selection.StratifiedKFold(n_splits=10)
 parameters_knn = {"n_neighbors": list(range(1, 30, 2))}
 knn = neighbors.KNeighborsClassifier()
 parameters_RF = {"n_estimators": list(range(1, 51, 5))}
@@ -174,4 +173,4 @@ svm = SVC(probability=True, gamma='scale', kernel='poly')
 
 # build_model_and_results(cv_10fold, knn, parameters_knn)
 # build_model_and_results(cv_10fold, svm, parameters_svm)
-build_model_and_results(cv_10fold, RF, parameters_RF)
+build_model_and_results(data, labels, RF, parameters_RF)
