@@ -26,6 +26,7 @@ import matplotlib.pyplot as plt
 from sklearn.svm import SVC
 from statistics import mean
 from statistics import stdev
+from score import scoring
 
 print('start')
 data = load_data()
@@ -40,6 +41,9 @@ results = []
 best_C = []
 best_coef0 = []
 accuracies = []
+f1_score = []
+precision = []
+recall_score = []
 conf_matrix_list = []
 
 tprs = []
@@ -100,9 +104,12 @@ for i, (validation_index, test_index) in enumerate(cv_10fold.split(data, labels)
         'set': 'test'
     })
     
-    # Accuracies
-    accuracy = metrics.accuracy_score(y_test, predicted)
-    accuracies.append(accuracy)
+    #Scores 
+    f1, prec, acc, recall = scoring(y_test, predicted)
+    f1_score.append(f1)
+    accuracies.append(acc)
+    precision.append(prec)
+    recall_score.append(recall)
 
     # Confusion matrix
     conf_matrix = metrics.confusion_matrix(y_test, predicted)
@@ -126,11 +133,23 @@ results = pd.DataFrame(results)
 #seaborn.boxplot(y='auc', x='set', data=results)
 #plt.show()
 
-# Accuracy
+# Scores
 mean_accuracy = mean(accuracies)
 std_accuracy = stdev(accuracies)
 print(mean_accuracy)
 print(std_accuracy)
+mean_f1 = mean(f1_score)
+std_f1 = stdev(f1_score)
+print(mean_f1)
+print(std_f1)
+mean_precision = mean(precision)
+std_precision = stdev(precision)
+print(mean_precision)
+print(std_precision)
+mean_recall = mean(recall_score)
+std_recall = stdev(recall_score)
+print(mean_recall)
+print(std_recall)
 
 # Confusion matrix
 mean_of_conf_matrix = np.mean(conf_matrix_list, axis=0)
