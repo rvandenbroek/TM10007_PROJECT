@@ -1,6 +1,6 @@
 '''
 This is a machine learning tool for the distinction of LGG and GBM, based on
-radiomic features
+radiomic features.
 '''
 import math
 from statistics import mean
@@ -111,24 +111,24 @@ def build_model_and_results(data, labels, classifier, parameters):
     _, axis = plt.subplots()
 
     # Loop over the folds
-    for i, (validation_index, test_index) in enumerate(cv_10fold.split(data, labels)):
+    for i, (train_index, test_index) in enumerate(cv_10fold.split(data, labels)):
 
         # Split the data
-        x_validation = data.iloc[validation_index]
-        y_validation = labels[validation_index]
+        x_train = data.iloc[train_index]
+        y_train = labels[train_index]
 
         x_test = data.iloc[test_index]
         y_test = labels[test_index]
 
         # Preprocessing of data
-        imputed_train, imputed_test = imputation(x_validation, x_test)
+        imputed_train, imputed_test = imputation(x_train, x_test)
         scaled_train, scaled_test = robust_scaler(imputed_train, imputed_test)
         pca_train, pca_test = pca_algorithm(scaled_train, scaled_test)
 
         # Create a grid search to find the optimal k using a gridsearch and 10-fold cross validation
         grid_search = model_selection.GridSearchCV(classifier, parameters,
                                                    cv=cv_10fold, scoring='roc_auc')
-        grid_search.fit(pca_train, y_validation)
+        grid_search.fit(pca_train, y_train)
 
         # Get resulting classifier with best hyperparameter
         clf = grid_search.best_estimator_
